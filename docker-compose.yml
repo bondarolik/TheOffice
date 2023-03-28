@@ -1,0 +1,48 @@
+services:
+  db:
+    image: postgres:15.2-alpine # or define exact version, postgres:14
+    container_name: the_office_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=the_office_db
+      - POSTGRES_USER=db_user
+      - POSTGRES_PASSWORD=super_secure_password # change to secure password
+    volumes:
+      - pg_data:/var/lib/postgresql/data # where we will store data      
+  redis:
+    image: redis:7.0.8-alpine # or define exact version, redis:6
+    container_name: the_office_redis
+    volumes:
+      - redis_data:/data # where we will store data    
+  app:
+    container_name: the_office_app
+    build: .
+    command: bin/rails s -b "0.0.0.0"
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true      
+    environment:
+      - HISTFILE=/app/log/.bash_history 
+      - DATABASE_URL=postgresql://db_user:super_secure_password@db
+      - REDIS_URL=redis://redis:6379
+      - DOCKER=true
+      - HOST=localhost:3000
+      - SITE=localhost
+      - EMAIL=no-reply@yourmail.com
+      - NAME=Name of you app
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+      - bundle:/gems
+    tmpfs:  
+      # Use temporary file system, instead of manually removing files through `bash -c "rm -f tmp/pids/server.pid"`
+      - /tmp
+      - /app/tmp/pids
+volumes:
+  pg_data:
+  redis_data:
+  bundle:
