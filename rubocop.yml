@@ -1,19 +1,23 @@
 require:
   - rubocop-rails
-  - rubocop-rspec
 inherit_gem:
   rubocop-shopify: rubocop.yml
 AllCops:
   UseCache: true
+  SuggestExtensions: false
   NewCops: enable
   Exclude:
-    - bin/*
-    - db/schema.rb
+    - 'bin/*'
+    - 'db/schema.rb'
 Layout/EmptyLineAfterMagicComment:
   Enabled: true
+Metrics/MethodLength:
+  Exclude:
+    - 'bin/*'
 Layout/LineLength:
   Exclude:
-    - spec/**/*
+    - 'bin/*'
+    - 'spec/**/*'
 Style/MethodCallWithArgsParentheses:
   Enabled: false
 Rails/InverseOf:
@@ -28,6 +32,7 @@ RSpec/ExampleLength:
   Max: 15
 Lint/MissingSuper:
   Exclude:
+    - 'bin/*'
     - 'app/components/**/*'
 RSpec/MultipleMemoizedHelpers:
   Max: 10

@@ -1,0 +1,85 @@
+# Required minimum dip version
+version: '7.5'
+
+environment:
+  COMPOSE_EXT: development
+
+compose:
+  files:
+    - docker-compose.yml
+  project_name: theoffice_app
+
+interaction:
+  shell:
+    description: Open the Bash shell in app's container
+    service: app
+    command: bash
+    compose:
+      run_options: [no-deps]
+
+  bundle:
+    description: Run Bundler commands
+    service: app
+    command: bundle
+
+  rake:
+    description: Run Rake commands
+    service: app
+    command: rake
+
+  rspec:
+    description: Run Rspec commands
+    service: app
+    environment:
+      RAILS_ENV: test
+    command: bundle exec rspec
+
+  rails:
+    description: Run Rails commands
+    service: app
+    command: bin/rails
+    subcommands:
+      s:
+        description: Run Rails server at http://localhost:3000
+        service: web
+        compose:
+          run_options: [service-ports, use-aliases]
+
+  rubocop:
+    description: Run Rspec commands
+    service: app
+    default_args: --parallel
+    command: bundle exec rubocop
+
+  # sidekiq:
+  #   description: Run sidekiq in background
+  #   service: worker
+  #   compose:
+  #     method: up
+  #     run_options: [detach]
+
+  psql:
+    description: Run Postgres psql console
+    service: db
+    default_args: proscanehs_dev
+    command: psql -h db -U proscanehs_user
+    
+  'redis-cli':
+    service: redis
+    command: redis-cli -h redis
+
+  setup_key:
+    description: Copy key
+    service: app
+    command: cp `pwd`/config/key.pem /root/keys/
+    shell: false # you can disable shell interpolations on the host machine and send the command as is
+
+  clean_cache:
+    description: Delete cache files on the host machine
+    command: rm -rf $(pwd)/tmp/cache/*
+
+provision:
+  - dip compose down --volumes
+  - dip clean_cache
+  - dip compose up -d pg redis
+  - dip bash -c ./bin/setup
