@@ -6,12 +6,12 @@ default: &default
 development:
   <<: *default
   url: <%= ENV.fetch("DATABASE_URL") %>
-  database: app_db_dev
+  database: the_office_db
 
 test:
   <<: *default
   url: <%= ENV.fetch("DATABASE_URL") %>
-  database: app_db_test
+  database: the_office_db_test
 
 staging:
   <<: *default
