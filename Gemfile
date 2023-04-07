@@ -23,9 +23,6 @@ gem 'redis', '~> 4.0'
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
-
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
@@ -36,8 +33,16 @@ gem 'bootsnap', require: false
 # gem "image_processing", "~> 1.2"
 # gem "mini_magick"
 
-# Utilities
+
+# https://codewithrails.com/rails-authentication
+gem "bcrypt", "~> 3.1.7"
 gem 'authentication-zero'
+# Use rotp for generating and validating one time passwords [https://github.com/mdp/rotp]
+gem "rotp"
+# Use rqrcode for creating and rendering QR codes into various formats [https://github.com/whomwah/rqrcode]
+gem "rqrcode"
+
+# Utilities
 # gem "marginalia"
 # gem "valid_email2"
 # gem 'httparty'
@@ -93,5 +98,4 @@ group :test do
   gem 'selenium-webdriver'
   gem 'webdrivers'
 end
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-gem 'bcrypt', '~> 3.1.7'
+
