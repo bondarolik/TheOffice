@@ -1,4 +1,6 @@
 class Identity::EmailVerificationsController < ApplicationController
+  layout "unauthenticated", except: %i[ show ]
+
   skip_before_action :authenticate, only: :show
 
   before_action :set_user, only: :show

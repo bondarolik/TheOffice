@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  layout "unauthenticated", only: %i[ new create ]
+
   skip_before_action :authenticate, only: %i[ new create ]
 
   before_action :set_session, only: :destroy

@@ -1,4 +1,6 @@
 class RegistrationsController < ApplicationController
+  layout "unauthenticated"
+
   skip_before_action :authenticate
 
   def new
