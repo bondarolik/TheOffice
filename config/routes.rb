@@ -18,6 +18,9 @@ Rails.application.routes.draw do
     resource :totp,      only: [:new, :create]
   end
   
+  # User settings page
+  get 'settings', to: 'pages#settings'
+
   # Default route
   root "pages#index"
 end
